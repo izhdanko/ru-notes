@@ -1,0 +1,74 @@
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" style="width: 200px;">
+  Фильтры
+</button>
+
+<div class="collapse" id="collapseFilters">
+
+</br>
+
+  <%= search_form_for search, url: url do |f| %>
+
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <%= f.label :user_username_cont, 'Имя пользователя:', class: 'form-label' %>
+      </div>
+      <div class="col">
+        <%= f.search_field :user_username_cont, class: 'form-control mb-3', style: 'width: 200px;' %>
+      </div>
+    </div>
+
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <%= f.label :user_admin_eq, 'Статус пользователя:', class: 'form-label' %>
+      </div>
+      <div class="col">
+        <%= f.select :user_admin_eq, options_for_select([['Администратор', true], ['Обычный пользователь', false]]), { include_blank: 'Все' }, { class: 'form-select mb-3', style: 'width: 200px;' } %>
+      </div>
+    </div>
+  
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <%= f.label :title_cont, 'Заголовок:', class: 'form-label' %>
+      </div>
+      <div class="col">
+        <%= f.search_field :title_cont, class: 'form-control mb-3', style: 'width: 200px;' %>
+      </div>
+    </div>
+
+    <div class="row align-items-center">
+        <div class="col-auto">
+          <% if controller.action_name == "pending" || controller.action_name == "approved" || controller.action_name == "rejected" || controller.controller_name == "main" && controller.action_name == "index" %>
+            <!-- Поле "Статус заметки" скрыто при данных действиях в контроллерах PostsController и MainController. -->
+          <% else %>
+            <%= f.label :status_eq, 'Статус заметки:', class: 'form-label' %>
+        </div>
+        <div class="col">    
+            <%= f.select :status_eq, options_for_select([['Черновик', 0], ['На проверке', 1], ['Утверждено', 2], ['Отклонено', 3]]), { include_blank: 'Все' }, { class: 'form-select mb-3', style: 'width: 200px;' } %>
+          <% end %>
+        </div>
+    </div>
+
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <%= f.label :region_id_eq, 'Регион:', class: 'form-label' %>
+      </div>
+      <div class="col">
+        <%= f.select :region_id_eq, options_for_select(Region.all.map{ |r| [r.name, r.id] }), { include_blank: 'Все' }, { class: 'form-select mb-3', style: 'width: 200px;' } %>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center">
+      <div class="col-auto">
+        <%= f.label :created_at_gteq, 'Дата публикации:', class: 'form-label' %>
+      </div>
+      <div>
+        <%= f.search_field :created_at_gteq, type: :date, class: 'form-control', style: 'width: 200px; margin-left: 24px;' %>
+      </div>
+      <span class="mx-3"><%= f.label :created_at_lteq, '-', class: 'form-label' %></span>
+        <%= f.search_field :created_at_lteq, type: :date, class: 'form-control', style: 'width: 200px;' %>
+    </div>
+    </br>
+    
+    <%= f.submit 'Применить Фильтр', class: 'btn btn-primary' %>
+  <% end %>
+</div>

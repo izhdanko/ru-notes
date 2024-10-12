@@ -1,0 +1,13 @@
+<h1>Все заметки</h1>
+
+<div class="mt-3">
+  <%= render 'filter_form', search: @search, url: posts_path %>
+</div>  
+
+<div class="mt-3">
+  <%= render partial: 'post_table', locals: { posts: @posts } %>
+</div>
+
+<div style="margin-bottom: 100px;">
+  <%= render partial: 'generate_report', locals: { posts: @posts } %>
+</div>

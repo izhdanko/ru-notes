@@ -1,0 +1,26 @@
+<table class="table table-striped table-bordered">
+  <thead class="thead-dark">
+    <tr>
+      <th>Имя пользователя</th>
+      <th>Статус пользователя</th>
+      <th>Регион</th>
+      <th>Заголовок</th>
+      <th>Статус заметки</th>
+      <th>Дата/время публикации</th>
+      <th>Действие</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% posts.each do |post| %>
+      <tr>
+        <td><%= post.user.username %></td>
+        <td><%= post.user.admin? ? 'Администратор' : 'Обычный пользователь' %></td>
+        <td><%= post.region.name %></td>
+        <td><%= post.title %></td>
+        <td><%= translate_status(post.status) %></td>
+        <td><%= post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+        <td><%= link_to 'Прочитать', post_path(post), class: "btn btn-primary" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

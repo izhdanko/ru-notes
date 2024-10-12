@@ -1,0 +1,61 @@
+<div class="bg-light p-3">
+
+<h1>Новая заметка</h1>
+
+<%= form_with(model: @post, local: true) do |form| %>
+  <% if @post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+        <% @post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :title, 'Заголовок', class: 'form-label' %>
+    <%= form.text_field :title, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :content, 'Текст', class: 'form-label' %>
+    <%= form.rich_text_area :content, class: 'form-control' %>
+  </div>
+
+  <% if current_user.admin? %>
+    <div class="field">
+      <%= form.label :region_id, 'Регион', class: 'form-label' %>
+      <%= form.collection_select :region_id, @regions, :id, :name, { include_blank: 'Все регионы' }, { class: 'form-select mb-3' } %>
+    </div>
+  <% else %>
+    <div class="field">
+      <%= form.label :region_id, "Ваш регион", class: 'form-label' %>
+      <%= form.text_field :region_name, value: current_user.region.name, readonly: true, class: 'form-control' %>
+      <%= form.hidden_field :region_id, value: current_user.region.id %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :images, 'Изображения', class: 'form-label' %>
+    <%= form.file_field :images, { multiple: true, class: 'form-control', type: 'file', id: 'formFileMultiple', style: 'width: 300px;' } %>
+  </div>
+
+
+
+  <div class="field">
+    <%= form.label :files, 'Файлы', class: 'form-label' %>
+    <%= form.file_field :files, { multiple: true, class: 'form-control', type: 'file', id: 'formFileMultiple', style: 'width: 300px;' } %>
+  </div>
+
+  <div class="actions mt-3 mb-3">
+    <%= form.submit 'Создать заметку', class: 'btn btn-primary' %>
+  </div>
+ 
+<% end %>
+
+</div>
+
+

@@ -1,0 +1,98 @@
+<div class="bg-light p-3">
+
+  <h1><%= @post.title %></h1>
+
+  <p>
+    <%= @post.content %>
+  </p>
+
+  <p>
+    <strong>Изображения:</strong>
+    <div class="images-container">
+      <% @post.images.each do |image| %>
+        <% if image.content_type == "image/webp" %>
+          <%= link_to image_tag(image, class: 'img-thumbnail'), url_for(image), data: { lightbox: "gallery" } %>
+        <% else %>
+          <%= link_to image_tag(image.variant(resize: "300x300"), class: 'img-thumbnail'), url_for(image), data: { lightbox: "gallery" } %>
+        <% end %>
+      <% end %>
+    </div>
+  </p>
+
+  <p>
+    <strong>Файлы:</strong>
+    <% @post.files.each do |file| %>
+      <%= link_to file.filename, rails_blob_path(file, disposition: 'attachment') %>
+    <% end %>
+  </p>
+
+  <div class="mt-3">
+    <table class="table table-striped table-bordered">
+      <tbody>
+        <tr>
+          <th scope="row">Статус поста:</th>
+          <td><%= translate_status(@post.status) %></td>
+        </tr>
+        <tr>
+          <th scope="row">Имя пользователя:</th>
+          <td><%= @post.user.username %></td>
+        </tr>
+        <tr>
+          <th scope="row">Статус пользователя:</th>
+          <td><%= @post.user.admin? ? 'Администратор' : 'Обычный пользователь' %></td>
+        </tr>
+        <tr>
+          <th scope="row">Регион:</th>
+          <td><%= @post.region.name %></td>
+        </tr>
+        <tr>
+          <th scope="row">Дата/время размещения поста:</th>
+          <td><%= @post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <div class="mb-3">
+    <% if current_user && current_user.admin? && @post.approved? %>
+      
+      <%= link_to 'Редактировать', edit_post_path(@post), class: 'btn btn-primary', style: 'width: 200px; display: inline-block;' %>
+      
+
+      <%= link_to 'Удалить', @post, method: :delete, data: { confirm: 'Вы уверены?' }, class: 'btn btn-danger', style: 'width: 200px; display: inline-block;' %>
+
+      <%= link_to 'Отклонить', change_status_post_path(@post, status: 'rejected'), method: :patch, data: { confirm: 'Изменить статус?' }, class: 'btn btn-primary', style: 'width: 200px; display: inline-block;' %>
+
+    <% elsif current_user && current_user.admin? && @post.pending? %>
+
+      <%= link_to 'Редактировать', edit_post_path(@post), class: 'btn btn-primary', style: 'width: 200px; display: inline-block;' %>
+      <%= link_to 'Удалить', @post, method: :delete, data: { confirm: 'Вы уверены?' }, class: 'btn btn-danger', style: 'width: 200px; display: inline-block;' %>
+
+      <%= link_to 'Утвердить', change_status_post_path(@post, status: 'approved'), method: :patch, data: { confirm: 'Изменить статус?' }, class: 'btn btn-primary', style: 'width: 200px; display: inline-block;' %>
+      <%= link_to 'Отклонить', change_status_post_path(@post, status: 'rejected'), method: :patch, data: { confirm: 'Изменить статус?' }, class: 'btn btn-primary', style: 'width: 200px; display: inline-block;' %>
+
+    <% elsif current_user && current_user.admin? && @post.rejected? %>
+
+      <%= link_to 'Редактировать', edit_post_path(@post), class: 'btn btn-primary', style: 'width: 200px; display: inline-block;' %>
+      <%= link_to 'Удалить', @post, method: :delete, data: { confirm: 'Вы уверены?' }, class: 'btn btn-danger', style: 'width: 200px; display: inline-block;' %>
+
+      <%= link_to 'Утвердить', change_status_post_path(@post, status: 'approved'), method: :patch, data: { confirm: 'Изменить статус?' }, class: 'btn btn-primary', style: 'width: 200px; display: inline-block;' %>
+
+    <% elsif current_user && current_user.admin? && @post.draft? %>
+
+      <%= link_to 'Редактировать', edit_post_path(@post), class: 'btn btn-primary', style: 'width: 200px; display: inline-block;' %>
+      <%= link_to 'Удалить', @post, method: :delete, data: { confirm: 'Вы уверены?' }, class: 'btn btn-danger', style: 'width: 200px; display: inline-block;' %>
+
+      <%= link_to 'Утвердить', change_status_post_path(@post, status: 'approved'), method: :patch, data: { confirm: 'Изменить статус?' }, class: 'btn btn-primary', style: 'width: 200px; display: inline-block;' %>
+      <%= link_to 'Отклонить', change_status_post_path(@post, status: 'rejected'), method: :patch, data: { confirm: 'Изменить статус?' }, class: 'btn btn-primary', style: 'width: 200px; display: inline-block;' %>    
+
+    <% elsif current_user && !current_user.admin? && @post.draft? %>
+
+      <%= link_to 'Редактировать', edit_post_path(@post), class: 'btn btn-primary', style: 'width: 200px; display: inline-block;' %>
+      <%= link_to 'Удалить', @post, method: :delete, data: { confirm: 'Вы уверены?' }, class: 'btn btn-danger', style: 'width: 200px; display: inline-block;' %>
+      <%= link_to 'Отправить на утверждение', send_for_approval_post_path(@post), method: :patch, data: { confirm: 'Изменить статус?' }, class: 'btn btn-primary', style: 'width: 300px; display: inline-block;' %>
+    <% end %>
+
+  </div>
+</div>

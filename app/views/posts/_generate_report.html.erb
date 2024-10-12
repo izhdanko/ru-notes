@@ -1,0 +1,116 @@
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseReport" aria-expanded="false" aria-controls="collapseReport" style="width: 200px;" onclick="scrollToReport()">
+  Отчёт
+</button>
+
+<div class="collapse" id="collapseReport">
+
+<%= form_tag generate_report_posts_path, method: :post, onsubmit: "return handleFormSubmit()" do %>
+
+
+    <div class="mt-3">
+      <p><b>Выберите данные для отчёта</b></p>
+    </div>  
+  
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <%= label_tag 'author', 'Автор:', class: 'form-label' %>
+      </div>
+      <div class="col">
+        <%= select_tag 'author', options_for_select(@authors), { include_blank: 'Все', class: 'form-select mb-3', style: 'width: 200px;' } %>
+      </div>
+    </div>
+
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <%= label_tag 'author_status', 'Статус автора:', class: 'form-label'  %>
+      </div>
+      <div class="col">
+        <%= select_tag 'author_status', options_for_select([['Администратор', true], ['Обычный пользователь', false]]), { include_blank: 'Все', class: 'form-select mb-3', style: 'width: 200px;' } %>
+      </div>
+    </div>
+
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <%= label_tag 'region', 'Регион:', class: 'form-label' %>
+      </div>
+      <div class="col">
+        <%= select_tag 'region', options_for_select(Region.all.map{ |r| [r.name, r.id] }), { include_blank: 'Все', class: 'form-select mb-3', style: 'width: 200px;' } %>
+      </div>
+    </div>
+
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <%= label_tag 'post_status', 'Статус заметки:', class: 'form-label' %>
+      </div>
+      <div class="col">
+        <%= select_tag 'post_status', options_for_select([['Черновик', 0], ['На проверке', 1], ['Утверждено', 2], ['Отклонено', 3]]), { include_blank: 'Все', class: 'form-select mb-3', style: 'width: 200px;' } %>
+      </div>
+    </div>
+
+     <div class="row align-items-center">
+      <div class="col-auto">
+        <%= label_tag 'title', 'Заголовок:', class: 'form-check-label' %>
+      </div>
+      <div class="col">
+        <%= check_box_tag 'filters[]', 'title', true, class: 'form-check-input', id: 'title' %>
+      </div>
+    </div>
+  
+     <div class="row align-items-center">
+      <div class="col-auto">
+        <%= label_tag 'content', 'Текст заметки:', class: 'form-check-label' %>
+      </div>
+      <div class="col">
+        <%= check_box_tag 'filters[]', 'content', true, class: 'form-check-input', id: 'content' %>
+      </div>
+    </div>
+  
+     <div class="row align-items-center">
+      <div class="col-auto">
+        <%= label_tag 'images', 'Изображения:', class: 'form-check-label' %>
+      </div>
+      <div class="col">
+        <%= check_box_tag 'filters[]', 'images', true, class: 'form-check-input', id: 'images' %>
+      </div>
+    </div>
+
+     <div class="row align-items-center">
+      <div class="col-auto">
+        <%= label_tag 'files', 'Файлы:', class: 'form-check-label' %>
+      </div>
+      <div class="col">
+        <%= check_box_tag 'filters[]', 'files', true, class: 'form-check-input', id: 'files' %>
+      </div>
+    </div>
+
+     <div class="row align-items-center">
+      <div class="col-auto">
+        <%= label_tag 'created_at', 'Дата/время размещения заметки:', class: 'form-check-label' %>
+      </div>
+      <div class="col">
+        <%= check_box_tag 'filters[]', 'created_at', true, class: 'form-check-input', id: 'created_at' %>
+      </div>
+    </div>
+   
+    <div class="mt-3">
+      <%= submit_tag 'Создать отчёт', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  function scrollToReport() {
+    const reportElement = document.getElementById('collapseReport');
+
+    // Проверяем, отображается ли элемент.
+    if (!reportElement.classList.contains('show')) {
+      // Ждём следующего потока выполнения, чтобы элемент успел открыться.
+      setTimeout(() => {
+        reportElement.scrollIntoView({ behavior: 'smooth' });
+      }, 300); // Задержка 300 мс (этот таймер можно подстроить под свои нужды).
+    } else {
+      reportElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+</script>
+

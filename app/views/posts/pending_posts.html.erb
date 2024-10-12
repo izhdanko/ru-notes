@@ -1,0 +1,9 @@
+<h1>Заметки на проверке</h1>
+
+<div class="mt-3">
+	<%= render 'filter_form', search: @search, url: pending_posts_path %>
+</div> 
+
+<div class="mt-3">
+	<%= render partial: 'post_table', locals: { posts: @pending_posts } %>
+</div> 

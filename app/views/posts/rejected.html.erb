@@ -1,0 +1,9 @@
+<h1>Отклонённые заметки</h1>
+
+<div class="mt-3">
+	<%= render 'filter_form', search: @search, url: rejected_posts_path %>
+</div> 
+
+<div class="mt-3">
+	<%= render partial: 'post_table', locals: { posts: @rejected_posts } %>
+</div> 

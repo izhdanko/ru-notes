@@ -1,0 +1,38 @@
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseUsersFilters" aria-expanded="false" aria-controls="collapseUsersFilters" style="width: 200px;">
+  Фильтры
+</button>
+
+<div class="collapse" id="collapseUsersFilters">
+  </br>
+  <%= search_form_for search, url: url do |f| %>
+
+	<div class="row align-items-center">
+	  <div class="col-auto">
+	    <%= f.label :username_cont, 'Имя пользователя:', class: 'form-label' %>
+	  </div>
+	  <div class="col">
+	    <%= f.search_field :username_cont, class: 'form-control mb-3', style: 'width: 200px;' %>
+	  </div>
+	</div>
+
+	<div class="row align-items-center">
+	  <div class="col-auto">
+	    <%= f.label :admin_eq, 'Статус пользователя:', class: 'form-label' %>
+	  </div>
+	  <div class="col">
+	    <%= f.select :admin_eq, options_for_select([['Администратор', true], ['Обычный пользователь', false]]), { include_blank: 'Все' }, { class: 'form-select mb-3', style: 'width: 200px;' } %>
+	  </div>
+	</div>
+
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <%= f.label :region_id_eq, 'Регион:', class: 'form-label' %>
+      </div>
+      <div class="col">
+        <%= f.select :region_id_eq, options_for_select(Region.all.map{ |r| [r.name, r.id] }), { include_blank: 'Все' }, { class: 'form-select mb-3', style: 'width: 200px;' } %>
+      </div>
+    </div>
+
+    <%= f.submit 'Применить фильтр', class: 'btn btn-primary' %>
+  <% end %>
+</div>

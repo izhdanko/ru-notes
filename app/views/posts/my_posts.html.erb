@@ -1,0 +1,9 @@
+<h1>Мои заметки</h1>
+
+<div class="mt-3">
+  <%= render 'filter_form', search: @search, url: my_posts_posts_path %>
+</div>  
+
+<div class="mt-3">
+  <%= render partial: 'post_table', locals: { posts: @user_posts } %>
+</div>

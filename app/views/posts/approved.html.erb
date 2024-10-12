@@ -1,0 +1,9 @@
+<h1>Опубликованные заметки</h1>
+
+<div class="mt-3">
+	<%= render 'filter_form', search: @search, url: approved_posts_path %>
+</div> 
+
+<div class="mt-3">
+	<%= render partial: 'post_table', locals: { posts: @approved_posts } %>
+</div> 
