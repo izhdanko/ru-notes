@@ -86,7 +86,7 @@
                 <li><%= t("Привет ") + current_user.username + '!' %></li>
                 <li><%= link_to 'Выйти', destroy_user_session_path, method: :delete, class: "nav-link" %></li>
               <% else %>
-                <li><%= link_to 'Регистрация', new_user_registration_path, class: "nav-link" %></li>
+                <li><%= link_to 'Зарегистрироваться', new_user_registration_path, class: "nav-link" %></li>
                 <li><%= link_to 'Войти', new_user_session_path, class: "nav-link" %></li>
               <% end %>  
             </ul>
